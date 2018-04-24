@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { connect } from 'react-redux'
+import Counter from './Counter'
 
 const mapStateToProps = state => ({
-  count: state.count
+  counts: state.counts
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onClick: () => dispatch({ type: 'INCREMENT' })
+  increment: (index) => dispatch({ type: 'INCREMENT', index }),
+  decrement: (index) => dispatch({ type: 'DECREMENT', index })
 })
 class App extends Component {
   render() {
@@ -18,8 +20,13 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <p>{this.props.count}</p>
-        <button onClick={this.props.onClick}>+</button>
+        {this.props.counts.map((count, index) => {
+          return <Counter
+            count={count}
+            increment={() => this.props.increment(index)} 
+            decrement={() => this.props.decrement(index)} 
+            />
+        })}
       </div>
     );
   }
